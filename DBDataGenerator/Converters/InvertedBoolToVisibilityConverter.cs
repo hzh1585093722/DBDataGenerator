@@ -4,15 +4,15 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Data;
+using System.Windows;
 
 namespace DBDataGenerator.Converters
 {
     /// <summary>
-    /// bool为true时，显示UI
+    /// bool为False时，显示UI
     /// </summary>
-    public class BoolToVisibilityConverter : IValueConverter
+    public class InvertedBoolToVisibilityConverter : IValueConverter
     {
         /// <summary>
         /// bool转Visibility，后台数据更新时用
@@ -26,10 +26,11 @@ namespace DBDataGenerator.Converters
         {
             if (value is bool boolValue)
             {
-                return boolValue ? Visibility.Visible : Visibility.Collapsed;
+                // 当 bool 为 false 时返回 Visible，为 true 时返回 Collapsed
+                return boolValue ? Visibility.Collapsed : Visibility.Visible;
             }
 
-            return Visibility.Collapsed; // 默认返回值
+            return Visibility.Visible; // 默认返回值
         }
 
 
@@ -45,10 +46,11 @@ namespace DBDataGenerator.Converters
         {
             if (value is Visibility visibility)
             {
-                return visibility == Visibility.Visible;
+                // 将 Visibility 反向转换为 bool，Visible 转为 false，Collapsed 转为 true
+                return visibility != Visibility.Visible;
             }
 
-            return false;
+            return true;
         }
     }
 }

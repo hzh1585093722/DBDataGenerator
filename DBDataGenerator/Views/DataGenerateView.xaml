@@ -52,9 +52,20 @@
                 </DataGrid>
             </Grid>
 
-            <Border Grid.Row="1" Background="LightBlue">
-                <StackPanel>
+            <Border Grid.Row="1" 
+                    Visibility="{Binding IsGenerateDataConfigShow,Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel >
                     <TextBlock Text="配置字段："/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Visibility="{Binding IsGenerateDataConfigShow,Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock FontSize="20">
+                        <Run Text="{Binding DbName}"/>
+                        <Run Text="是系统数据库，只能查看表格字段信息，无法使用数据生成操作"/>
+                    </TextBlock>
                 </StackPanel>
             </Border>
         </Grid>
