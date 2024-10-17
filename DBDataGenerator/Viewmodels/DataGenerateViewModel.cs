@@ -23,6 +23,8 @@ namespace DBDataGenerator.Viewmodels
         private readonly DataBaseService _dataBaseService;
         private ObservableCollection<ColumnSchema> _columnSchemas = new ObservableCollection<ColumnSchema>();
         private bool _isGenerateDataConfigShow = true;
+        private ColumnSchema _selectedColumnSchema;
+        private int _generateCount = 10000;
 
         /// <summary>
         /// 数据库名称
@@ -44,6 +46,15 @@ namespace DBDataGenerator.Viewmodels
         /// </summary>
         public bool IsGenerateDataConfigShow { get => _isGenerateDataConfigShow; set => SetProperty(ref _isGenerateDataConfigShow, value); }
 
+        /// <summary>
+        /// 选中的列信息
+        /// </summary>
+        public ColumnSchema SelectedColumnSchema { get => _selectedColumnSchema; set => SetProperty(ref _selectedColumnSchema, value); }
+
+        /// <summary>
+        /// 生成数据条数
+        /// </summary>
+        public int GenerateCount { get => _generateCount; set => SetProperty(ref _generateCount, value); }
 
         public DataGenerateViewModel(DataBaseService dataBaseService)
         {
@@ -96,6 +107,21 @@ namespace DBDataGenerator.Viewmodels
         });
 
 
+        /// <summary>
+        /// 按钮： 确认生成数据
+        /// </summary>
+        /// <returns></returns>
+        public RelayCommand ConfirmDataGenerateCmd => new RelayCommand(() =>
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        });
         #region 私有方法
         /// <summary>
         /// 是否为系统数据库。mysql，information_schema，performance_schema，这3张表是系统表，禁止修改

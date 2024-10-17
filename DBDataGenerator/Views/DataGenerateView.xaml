@@ -15,8 +15,22 @@
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
 
-        <Button Padding="7,0,7,0" Width="120" Height="50" 
+        <StackPanel Orientation="Horizontal">
+            <Button Padding="7,0,7,0" Width="120" Height="50" 
                 Margin="10,0,0,0" HorizontalAlignment="Left" Command="{Binding SwitchToSelectTableViewCmd}">回到表格选择界面</Button>
+            <Button Padding="7,0,7,0" Width="120" Height="50" 
+                Margin="10,0,0,0" HorizontalAlignment="Left" Command="{Binding ConfirmDataGenerateCmd}">确认生成数据</Button>
+
+            <!--数据条数输入框-->
+            <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                <TextBlock Text="生成数据条数" FontSize="14"/>
+                <TextBox Margin="0,7,0,0" FontSize="14" Text="{Binding GenerateCount}"/>
+            </StackPanel>
+        </StackPanel>
+
+
+
+        
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
             <TextBlock VerticalAlignment="Center" FontSize="16">
                 <Run>数据库名称：</Run>
@@ -35,7 +49,7 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="0,0,0,0" Background="#bfa">
-                <DataGrid ItemsSource="{Binding ColumnSchemas}" Height="auto"
+                <DataGrid ItemsSource="{Binding ColumnSchemas}" Height="auto" SelectedItem="{Binding SelectedColumnSchema}"
                           AutoGenerateColumns="False" IsReadOnly="True" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*" Header="序号"  Binding="{Binding ORDINAL_POSITION}"/>
@@ -52,10 +66,11 @@
                 </DataGrid>
             </Grid>
 
-            <Border Grid.Row="1" 
+            <Border Grid.Row="1" Padding="10"
                     Visibility="{Binding IsGenerateDataConfigShow,Converter={StaticResource BoolToVisibilityConverter}}">
-                <StackPanel >
-                    <TextBlock Text="配置字段："/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="配置字段：" FontSize="16"/>
+                    <TextBlock Text="{Binding SelectedColumnSchema.COLUMN_NAME}" FontSize="16" FontWeight="Bold"/>
                 </StackPanel>
             </Border>
 
