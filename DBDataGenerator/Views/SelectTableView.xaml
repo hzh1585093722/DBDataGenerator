@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="DBDataGenerator.Views.SelectTableView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DBDataGenerator.Views"
+             DataContext="{Binding Source={StaticResource Locator},Path=SelectTableViewModel}"
+             xmlns:viewmodels="clr-namespace:DBDataGenerator.Viewmodels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:SelectTableViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        
+        <Button Padding="7,0,7,0" Width="100" Height="50" 
+                Margin="10,0,0,0" HorizontalAlignment="Left" Command="{Binding SwitchToLoginViewCmd}">回到登录界面</Button>
+        <Button Padding="7,0,7,0" Width="100" Height="50" 
+                Margin="0,0,15,0" HorizontalAlignment="Right" Command="{Binding GenerateTableDataCmd}">生成选中表数据</Button>
+
+        <Grid Grid.Row="1" Background="#F0F0F0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="0,0,0,20">
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Padding="0,7,0,7">数据库列表</TextBlock>
+                <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType=Grid},Path=ActualHeight}">
+                    <ListBox ItemsSource="{Binding DbList}"
+                             MouseDoubleClick="ListBox_MouseDoubleClick">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <TextBlock Text="{Binding SCHEMA_NAME}"/>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="0,0,0,20">
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center"  FontSize="20" Padding="0,7,0,7">表格列表</TextBlock>
+                </Grid>
+                <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType=Grid},Path=ActualHeight}">
+                    <ListBox ItemsSource="{Binding Tables}" SelectedItem="{Binding SelectedTable}" 
+                             ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
