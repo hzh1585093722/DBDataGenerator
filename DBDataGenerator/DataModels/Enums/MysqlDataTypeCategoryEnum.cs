@@ -12,18 +12,23 @@ namespace DBDataGenerator.DataModels.Enums
     public enum MysqlDataTypeCategoryEnum
     {
         /// <summary>
-        /// 数值类型
+        /// 整数类型
         /// </summary>
-        Number = 0,
+        Integer = 0,
+
+        /// <summary>
+        /// 实数类型
+        /// </summary>
+        Real = 1,
 
         /// <summary>
         /// 文本类型
         /// </summary>
-        Text = 1,
+        Text = 2,
 
         /// <summary>
         /// 日期类型
         /// </summary>
-        Datetime = 2
+        Datetime = 3
     }
 }
