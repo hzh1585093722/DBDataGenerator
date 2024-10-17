@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DBDataGenerator.Viewmodels
 {
@@ -25,6 +26,7 @@ namespace DBDataGenerator.Viewmodels
         private bool _isGenerateDataConfigShow = true;
         private ColumnSchema _selectedColumnSchema;
         private int _generateCount = 10000;
+        private ContentControl _displayGenerateConfigView;
 
         /// <summary>
         /// 数据库名称
@@ -55,6 +57,11 @@ namespace DBDataGenerator.Viewmodels
         /// 生成数据条数
         /// </summary>
         public int GenerateCount { get => _generateCount; set => SetProperty(ref _generateCount, value); }
+
+        /// <summary>
+        /// 数据配置编辑界面，可切换
+        /// </summary>
+        public ContentControl DisplayGenerateConfigView { get => _displayGenerateConfigView; set => SetProperty(ref _displayGenerateConfigView, value); }
 
         public DataGenerateViewModel(DataBaseService dataBaseService)
         {

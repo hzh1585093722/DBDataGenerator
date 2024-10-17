@@ -15,6 +15,7 @@ namespace DBDataGenerator.DataModels.DataGenerateConfigModels
         private string _databaseName;
         private string _tableName;
         private string _columnName;
+        private MysqlDataTypeCategoryEnum _mysqlDataTypeCategoryEnum;
         private DataGenerateTypeEnum _dataGenerateType;
         private IDataGenerateConfig _dataGenerateConfig;
 
@@ -32,6 +33,11 @@ namespace DBDataGenerator.DataModels.DataGenerateConfigModels
         /// 列名称
         /// </summary>
         public string ColumnName { get => this._columnName; set { this._columnName = value; } }
+
+        /// <summary>
+        /// 数据类型分类，大致分为：数值、文本、日期；方便软件进行区分
+        /// </summary>
+        private MysqlDataTypeCategoryEnum MysqlDataTypeCategoryEnum { get => this._mysqlDataTypeCategoryEnum; set { this._mysqlDataTypeCategoryEnum = value; } }
 
         /// <summary>
         /// 数据生成类型

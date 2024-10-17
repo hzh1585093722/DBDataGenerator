@@ -66,14 +66,24 @@
                 </DataGrid>
             </Grid>
 
+            <!--数据配置编辑区域-->
             <Border Grid.Row="1" Padding="10"
                     Visibility="{Binding IsGenerateDataConfigShow,Converter={StaticResource BoolToVisibilityConverter}}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="配置字段：" FontSize="16"/>
-                    <TextBlock Text="{Binding SelectedColumnSchema.COLUMN_NAME}" FontSize="16" FontWeight="Bold"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="配置字段：" FontSize="16"/>
+                        <TextBlock Text="{Binding SelectedColumnSchema.COLUMN_NAME}" FontSize="16" FontWeight="Bold"/>
+                    </StackPanel>
+                    <!--数据配置编辑界面-->
+                    <ContentControl Grid.Row="1" Content="{Binding DisplayGenerateConfigView}"/>
+                </Grid>
             </Border>
 
+            <!--系统数据库禁止编辑时提示字样-->
             <Border Grid.Row="1"
                     Visibility="{Binding IsGenerateDataConfigShow,Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
