@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using DBDataGenerator.Viewmodels.DataGenerateConfigViewModels;
 
 namespace DBDataGenerator.Viewmodels
 {
@@ -32,6 +33,8 @@ namespace DBDataGenerator.Viewmodels
             services.AddSingleton<SelectTableViewModel>();
             services.AddSingleton<DataGenerateViewModel>();
             services.AddSingleton<DataGenerateService>();
+            services.AddSingleton<NumberGenerateConfigViewModel>();
+            
         }
 
 
@@ -59,5 +62,10 @@ namespace DBDataGenerator.Viewmodels
         /// 数据生成服务
         /// </summary>
         public DataGenerateService DataGenerateService => _serviceProvider.GetRequiredService<DataGenerateService>();
+
+        /// <summary>
+        /// 视图模型：数值类型生成配置
+        /// </summary>
+        public NumberGenerateConfigViewModel NumberGenerateConfigViewModel => _serviceProvider.GetRequiredService<NumberGenerateConfigViewModel>();
     }
 }

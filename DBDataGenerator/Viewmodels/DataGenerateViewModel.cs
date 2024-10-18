@@ -209,8 +209,18 @@ namespace DBDataGenerator.Viewmodels
                 // 根据类型分类,加载相关配置界面
                 switch (generateDataConfig.MysqlDataTypeCategoryEnum)
                 {
-                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Integer: this.DisplayGenerateConfigView = new NumberGenerateConfigView(); break;
-                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Real: this.DisplayGenerateConfigView = new NumberGenerateConfigView(); break;
+                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Integer:
+                        this.DisplayGenerateConfigView = new NumberGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
+                        {
+
+                        });
+                        break;
+                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Real:
+                        this.DisplayGenerateConfigView = new NumberGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
+                        {
+
+                        });
+                        break;
                     case DataModels.Enums.MysqlDataTypeCategoryEnum.Text: this.DisplayGenerateConfigView = new TextGenerateConfigView(); break;
                     case DataModels.Enums.MysqlDataTypeCategoryEnum.Datetime: this.DisplayGenerateConfigView = new DatetimeGenerateConfigView(); break;
                     default: this.DisplayGenerateConfigView = null; break;

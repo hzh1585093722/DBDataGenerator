@@ -4,9 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DBDataGenerator.Views.DataGenerateConfigViews"
+             xmlns:viewmodels="clr-namespace:DBDataGenerator.Viewmodels.DataGenerateConfigViewModels" 
+             DataContext="{Binding Source={StaticResource Locator},Path=NumberGenerateConfigViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:NumberGenerateConfigViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="数值生成配置"/>
-    </Grid>
+
+    <Border>
+        <StackPanel>
+            <ComboBox ItemsSource="{Binding DataGenerateTypeList}" SelectedItem="{Binding SelectedDataGenerateType}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+    </Border>
 </UserControl>
