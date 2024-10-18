@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DBDataGenerator.DataModels;
+using DBDataGenerator.DataModels.DataGenerateConfigModels;
 using DBDataGenerator.Services;
 using DBDataGenerator.Views;
+using DBDataGenerator.Views.DataGenerateConfigViews;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,6 +29,9 @@ namespace DBDataGenerator.Viewmodels
         private ColumnSchema _selectedColumnSchema;
         private int _generateCount = 10000;
         private ContentControl _displayGenerateConfigView;
+        private DataGenerateService _dataGenerateService;
+        private ObservableCollection<ColumnGenerateDataConfig> _dataGenerateConfigs;
+
 
         /// <summary>
         /// 数据库名称
@@ -51,7 +56,15 @@ namespace DBDataGenerator.Viewmodels
         /// <summary>
         /// 选中的列信息
         /// </summary>
-        public ColumnSchema SelectedColumnSchema { get => _selectedColumnSchema; set => SetProperty(ref _selectedColumnSchema, value); }
+        public ColumnSchema SelectedColumnSchema
+        {
+            get => _selectedColumnSchema;
+            set
+            {
+                SetProperty(ref _selectedColumnSchema, value);
+                this.HandleSelectedColumnSchemaChanged(SelectedColumnSchema);// 处理选中项
+            }
+        }
 
         /// <summary>
         /// 生成数据条数
@@ -59,14 +72,25 @@ namespace DBDataGenerator.Viewmodels
         public int GenerateCount { get => _generateCount; set => SetProperty(ref _generateCount, value); }
 
         /// <summary>
+        /// 数据表所有列的数据生成配置
+        /// </summary>
+        public ObservableCollection<ColumnGenerateDataConfig> DataGenerateConfigs { get => _dataGenerateConfigs; set => SetProperty(ref _dataGenerateConfigs, value); }
+
+        /// <summary>
         /// 数据配置编辑界面，可切换
         /// </summary>
         public ContentControl DisplayGenerateConfigView { get => _displayGenerateConfigView; set => SetProperty(ref _displayGenerateConfigView, value); }
 
-        public DataGenerateViewModel(DataBaseService dataBaseService)
+
+        /// <summary>
+        /// 构造方法
+        /// </summary>
+        /// <param name="dataBaseService">数据库服务</param>
+        /// <param name="dataGenerateService">数据生成服务</param>
+        public DataGenerateViewModel(DataBaseService dataBaseService, DataGenerateService dataGenerateService)
         {
             this._dataBaseService = dataBaseService;
-
+            this._dataGenerateService = dataGenerateService;
         }
 
 
@@ -90,6 +114,10 @@ namespace DBDataGenerator.Viewmodels
                 {
                     this.IsGenerateDataConfigShow = true;
                 }
+
+                // 初始化列数据生成配置
+                List<ColumnGenerateDataConfig> list = this._dataGenerateService.GetColumnGenerateDataConfigs(this.DbName, this.TableName, columnSchemas);
+                this.DataGenerateConfigs = new ObservableCollection<ColumnGenerateDataConfig>(list);
             }
             catch (Exception ex)
             {
@@ -122,7 +150,7 @@ namespace DBDataGenerator.Viewmodels
         {
             try
             {
-                
+
             }
             catch (Exception ex)
             {
@@ -130,6 +158,7 @@ namespace DBDataGenerator.Viewmodels
             }
         });
         #region 私有方法
+
         /// <summary>
         /// 是否为系统数据库。mysql，information_schema，performance_schema，这3张表是系统表，禁止修改
         /// </summary>
@@ -153,6 +182,44 @@ namespace DBDataGenerator.Viewmodels
             }
 
             return false;
+        }
+
+
+        /// <summary>
+        /// 用户选中一个字段时的处理方法
+        /// </summary>
+        /// <param name="selectedColumnSchema"></param>
+        private void HandleSelectedColumnSchemaChanged(ColumnSchema selectedColumnSchema)
+        {
+            try
+            {
+                if (selectedColumnSchema == null)
+                {
+                    return;
+                }
+
+                // 在生成配置列表获取选中项的数据生成配置
+                ColumnGenerateDataConfig? generateDataConfig = this.DataGenerateConfigs.Where(x => x.ColumnName == selectedColumnSchema.COLUMN_NAME).FirstOrDefault();
+                if (generateDataConfig == null)
+                {
+                    MessageBox.Show($"找不到列【{selectedColumnSchema.COLLATION_NAME}】的列生成配置信息，请退出并重新进入该界面后重试", "消息", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // 根据类型分类,加载相关配置界面
+                switch (generateDataConfig.MysqlDataTypeCategoryEnum)
+                {
+                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Integer: this.DisplayGenerateConfigView = new NumberGenerateConfigView(); break;
+                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Real: this.DisplayGenerateConfigView = new NumberGenerateConfigView(); break;
+                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Text: this.DisplayGenerateConfigView = new TextGenerateConfigView(); break;
+                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Datetime: this.DisplayGenerateConfigView = new DatetimeGenerateConfigView(); break;
+                    default: this.DisplayGenerateConfigView = null; break;
+                };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #endregion
     }

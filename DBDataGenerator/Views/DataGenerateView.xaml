@@ -50,7 +50,7 @@
 
             <Grid Grid.Row="0" Margin="0,0,0,0" Background="#bfa">
                 <DataGrid ItemsSource="{Binding ColumnSchemas}" Height="auto" SelectedItem="{Binding SelectedColumnSchema}"
-                          AutoGenerateColumns="False" IsReadOnly="True" >
+                          AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*" Header="序号"  Binding="{Binding ORDINAL_POSITION}"/>
                         <DataGridTextColumn Width="2*" Header="字段名"  Binding="{Binding COLUMN_NAME}"/>

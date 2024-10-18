@@ -37,17 +37,17 @@ namespace DBDataGenerator.DataModels.DataGenerateConfigModels
         /// <summary>
         /// 数据类型分类，大致分为：数值、文本、日期；方便软件进行区分
         /// </summary>
-        private MysqlDataTypeCategoryEnum MysqlDataTypeCategoryEnum { get => this._mysqlDataTypeCategoryEnum; set { this._mysqlDataTypeCategoryEnum = value; } }
+        public MysqlDataTypeCategoryEnum MysqlDataTypeCategoryEnum { get => this._mysqlDataTypeCategoryEnum; set { this._mysqlDataTypeCategoryEnum = value; } }
 
         /// <summary>
         /// 数据生成类型
         /// </summary>
-        private DataGenerateTypeEnum DataGenerateType { get => this._dataGenerateType; set { this._dataGenerateType = value; } }
+        public DataGenerateTypeEnum DataGenerateType { get => this._dataGenerateType; set { this._dataGenerateType = value; } }
 
         /// <summary>
         /// 数据生成配置
         /// </summary>
-        private IDataGenerateConfig DataGenerateConfig { get => this._dataGenerateConfig; set { this._dataGenerateConfig = value; } }
+        public IDataGenerateConfig DataGenerateConfig { get => this._dataGenerateConfig; set { this._dataGenerateConfig = value; } }
 
     }
 }

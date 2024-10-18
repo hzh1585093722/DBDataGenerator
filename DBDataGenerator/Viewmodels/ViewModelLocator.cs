@@ -31,6 +31,7 @@ namespace DBDataGenerator.Viewmodels
             services.AddSingleton<SelectTableService>();
             services.AddSingleton<SelectTableViewModel>();
             services.AddSingleton<DataGenerateViewModel>();
+            services.AddSingleton<DataGenerateService>();
         }
 
 
@@ -52,6 +53,11 @@ namespace DBDataGenerator.Viewmodels
         /// <summary>
         /// 数据生成选项ViewModel
         /// </summary>
-        public DataGenerateViewModel DataGenerateViewModel => _serviceProvider.GetRequiredService<DataGenerateViewModel>();    
+        public DataGenerateViewModel DataGenerateViewModel => _serviceProvider.GetRequiredService<DataGenerateViewModel>();
+
+        /// <summary>
+        /// 数据生成服务
+        /// </summary>
+        public DataGenerateService DataGenerateService => _serviceProvider.GetRequiredService<DataGenerateService>();
     }
 }
