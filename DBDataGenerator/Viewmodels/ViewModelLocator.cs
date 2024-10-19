@@ -34,7 +34,7 @@ namespace DBDataGenerator.Viewmodels
             services.AddSingleton<DataGenerateViewModel>();
             services.AddSingleton<DataGenerateService>();
             services.AddSingleton<NumberGenerateConfigViewModel>();
-            
+            services.AddSingleton<DatetimeGenerateConfigViewModel>();
         }
 
 
@@ -67,5 +67,11 @@ namespace DBDataGenerator.Viewmodels
         /// 视图模型：数值类型生成配置
         /// </summary>
         public NumberGenerateConfigViewModel NumberGenerateConfigViewModel => _serviceProvider.GetRequiredService<NumberGenerateConfigViewModel>();
+
+        /// <summary>
+        /// 视图模型：日期类型生成配置
+        /// </summary>
+        public DatetimeGenerateConfigViewModel DatetimeGenerateConfigViewModel => _serviceProvider.GetRequiredService<DatetimeGenerateConfigViewModel>();
+        
     }
 }

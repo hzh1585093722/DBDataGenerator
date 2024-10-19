@@ -4,9 +4,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DBDataGenerator.Views.DataGenerateConfigViews"
+             xmlns:viewmodels="clr-namespace:DBDataGenerator.Viewmodels.DataGenerateConfigViewModels" 
+             DataContext="{Binding Source={StaticResource Locator},Path=DatetimeGenerateConfigViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:DatetimeGenerateConfigViewModel}"
+             xmlns:customControls="clr-namespace:DBDataGenerator.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="日期生成配置"/>
-    </Grid>
+    <Border Padding="0,5,0,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <Popup>
+                
+            </Popup>
+
+            <StackPanel Grid.Row="0">
+                <!--生成数据类型下拉框-->
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock Text="生成数据类型：" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding DataGenerateTypeList}" SelectedItem="{Binding SelectedDataGenerateType}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <!--随机整数-->
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="固定时间值：" VerticalAlignment="Center"/>
+                        <customControls:DatetimePickerControl SelectedDatetime="{Binding FixedDatetimeVal}"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1">
+                <Button Content="保存配置" Command="{Binding SaveConfigCmd}" Height="40" Width="80"/>
+            </StackPanel>
+
+        </Grid>
+    </Border>
 </UserControl>

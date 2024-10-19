@@ -58,7 +58,7 @@
             </StackPanel>
 
             <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1">
-                <Button Content="保存配置" Height="40" Width="80"/>
+                <Button Content="保存配置" Command="{Binding SaveConfigCmd}" Height="40" Width="80"/>
             </StackPanel>
 
         </Grid>

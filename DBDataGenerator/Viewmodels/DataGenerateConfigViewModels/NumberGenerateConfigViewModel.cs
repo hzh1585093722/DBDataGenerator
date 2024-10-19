@@ -101,8 +101,16 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
             try
             {
                 // 拷贝原配置
-                ColumnGenerateDataConfig? newConfig = JsonConvert.DeserializeObject<ColumnGenerateDataConfig>(
-                    JsonConvert.SerializeObject(this._generateDataConfig));
+                //ColumnGenerateDataConfig? newConfig = JsonConvert.DeserializeObject<ColumnGenerateDataConfig>(
+                //    JsonConvert.SerializeObject(this._generateDataConfig));
+
+                ColumnGenerateDataConfig? newConfig = new ColumnGenerateDataConfig() {
+                    DatabaseName = $"{this._generateDataConfig.DatabaseName}",
+                    TableName = $"{this._generateDataConfig.TableName}",
+                    ColumnName = $"{this._generateDataConfig.ColumnName}",
+                    DataGenerateType = this._generateDataConfig.DataGenerateType,
+                    DataGenerateConfig = this._generateDataConfig.DataGenerateConfig,
+                };
 
                 if (newConfig != null && this.SelectedDataGenerateType != null)
                 {
