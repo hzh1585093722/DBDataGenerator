@@ -10,15 +10,57 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Border>
-        <StackPanel>
-            <ComboBox ItemsSource="{Binding DataGenerateTypeList}" SelectedItem="{Binding SelectedDataGenerateType}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </StackPanel>
+    <Border Padding="0,5,0,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <!--生成数据类型下拉框-->
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock Text="生成数据类型：" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding DataGenerateTypeList}" SelectedItem="{Binding SelectedDataGenerateType}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <!--随机整数-->
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" 
+                            Visibility="{Binding ShowIntValueForm,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="最小值：" VerticalAlignment="Center"/>
+                        <TextBox Width="50" Height="30" VerticalContentAlignment="Center" Text="{Binding IntValueMin}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                        <TextBlock Text="最大值：" VerticalAlignment="Center"/>
+                        <TextBox Width="50" Height="30" VerticalContentAlignment="Center" Text="{Binding IntValueMax}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!--随机小数-->
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" 
+                            Visibility="{Binding ShowRealValueForm,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="最小值：" VerticalAlignment="Center"/>
+                        <TextBox Width="50" Height="30" VerticalContentAlignment="Center" Text="{Binding RealValueMin}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                        <TextBlock Text="最大值：" VerticalAlignment="Center"/>
+                        <TextBox Width="50" Height="30" VerticalContentAlignment="Center" Text="{Binding RealValueMax}"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1">
+                <Button Content="保存配置" Height="40" Width="80"/>
+            </StackPanel>
+
+        </Grid>
     </Border>
 </UserControl>

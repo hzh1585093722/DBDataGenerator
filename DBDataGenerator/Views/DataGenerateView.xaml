@@ -79,7 +79,9 @@
                         <TextBlock Text="{Binding SelectedColumnSchema.COLUMN_NAME}" FontSize="16" FontWeight="Bold"/>
                     </StackPanel>
                     <!--数据配置编辑界面-->
-                    <ContentControl Grid.Row="1" Content="{Binding DisplayGenerateConfigView}"/>
+                    <Grid Grid.Row="1">
+                        <ContentControl Content="{Binding DisplayGenerateConfigView}"/>
+                    </Grid>
                 </Grid>
             </Border>
 

@@ -157,6 +157,8 @@ namespace DBDataGenerator.Viewmodels
                 MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         });
+
+
         #region 私有方法
 
         /// <summary>

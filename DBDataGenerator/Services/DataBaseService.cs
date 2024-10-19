@@ -105,7 +105,9 @@ namespace DBDataGenerator.Services
             var adapter = new MySqlDataAdapter(query, MySqlConnection);
             var dataTable = new DataTable();
             adapter.Fill(dataTable);
-            return dataTable.ConvertDataTableToList<ColumnSchema>();
+
+            List<ColumnSchema> list = dataTable.ConvertDataTableToList<ColumnSchema>().OrderBy(x=>x.ORDINAL_POSITION).ToList();
+            return list;
         }
 
 

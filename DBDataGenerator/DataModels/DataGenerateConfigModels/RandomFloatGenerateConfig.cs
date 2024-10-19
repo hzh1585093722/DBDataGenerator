@@ -41,6 +41,6 @@ namespace DBDataGenerator.DataModels.DataGenerateConfigModels
         /// <summary>
         /// 数值下限
         /// </summary>
-        private double LowerLimit { get => this._lowerLimit; set => SetProperty(ref _lowerLimit, value); }
+        public double LowerLimit { get => this._lowerLimit; set => SetProperty(ref _lowerLimit, value); }
     }
 }

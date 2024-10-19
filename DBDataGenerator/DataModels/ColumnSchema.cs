@@ -24,7 +24,7 @@ namespace DBDataGenerator.DataModels
         /// <summary>
         /// 序号
         /// </summary>
-        public UInt64? ORDINAL_POSITION { get; set; } = 0;
+        public UInt32? ORDINAL_POSITION { get; set; } = 0;
 
 
         /// <summary>
