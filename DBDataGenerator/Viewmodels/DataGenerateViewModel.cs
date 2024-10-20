@@ -155,7 +155,10 @@ namespace DBDataGenerator.Viewmodels
         {
             try
             {
-
+                if (this.GenerateCount < 0) {
+                    MessageBox.Show("生成数量必须大于等于0", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
             catch (Exception ex)
             {

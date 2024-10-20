@@ -157,7 +157,7 @@ namespace DBDataGenerator.Common
                         JsonObjectGenerateConfig config = new JsonObjectGenerateConfig();
                         config.DatabaseName = jsonObject["DatabaseName"].ToString();
                         config.TableName = jsonObject["TableName"].ToString();
-                        config.DatabaseName = jsonObject["ColumnName"].ToString();
+                        config.ColumnName = jsonObject["ColumnName"].ToString();
 
                         // 解析属性
                         string properties = jsonObject["Properties"].ToString();
@@ -171,7 +171,7 @@ namespace DBDataGenerator.Common
                         JsonArrayGenerateConfig config = new JsonArrayGenerateConfig();
                         config.DatabaseName = jsonObject["DatabaseName"].ToString();
                         config.TableName = jsonObject["TableName"].ToString();
-                        config.DatabaseName = jsonObject["ColumnName"].ToString();
+                        config.ColumnName = jsonObject["ColumnName"].ToString();
                         config.JsonArrayCount = int.Parse(jsonObject["JsonArrayCount"].ToString());
 
                         // 解析里面JSON对象
