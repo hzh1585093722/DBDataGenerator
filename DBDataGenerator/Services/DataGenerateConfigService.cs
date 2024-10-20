@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
+using DBDataGenerator.Common;
 
 namespace DBDataGenerator.Services
 {
@@ -14,6 +17,8 @@ namespace DBDataGenerator.Services
     /// </summary>
     public class DataGenerateConfigService
     {
+        private readonly string _configFileSavePath = AppDomain.CurrentDomain.BaseDirectory + "/DataGenerateConfigs";
+
         public DataGenerateConfigService()
         {
         }
@@ -47,15 +52,31 @@ namespace DBDataGenerator.Services
                 return columnGenerateDataConfigs;
             }
 
+            // 读取配置文件的数据
+            List<ColumnGenerateDataConfig> configList = this.LoadColumnGenerateDataConfigFile(databaseName, tableName);
+
             // 生成配置
             foreach (ColumnSchema columnSchema in columnSchemas)
             {
-                ColumnGenerateDataConfig newConfig = InitColumnGenerateDataConfig(databaseName, tableName, columnSchema);
-                columnGenerateDataConfigs.Add(newConfig);
+                ColumnGenerateDataConfig? oldConfig = configList.FirstOrDefault(x => x.ColumnName == columnSchema.COLUMN_NAME);
+
+                // 如果配置文件有该列的配置信息，使用配置文件的，否则生成新配置
+                if (oldConfig == null)
+                {
+                    ColumnGenerateDataConfig newConfig = InitColumnGenerateDataConfig(databaseName, tableName, columnSchema);
+                    columnGenerateDataConfigs.Add(newConfig);
+                }
+                else
+                {
+                    columnGenerateDataConfigs.Add(oldConfig);
+                }
             }
 
             // 如果有默认值为自增类型的列，则将其数据生成类型设置为自增ID
-            InitAutoIncrementKeyIfExist(columnGenerateDataConfigs, columnSchemas);
+            this.InitAutoIncrementKeyIfExist(columnGenerateDataConfigs, columnSchemas);
+
+            // 保存配置到文件，因为上面的代码可能生成了新的列配置信息
+            this.SaveColumnGenerateDataConfig(databaseName,tableName,columnGenerateDataConfigs);
 
             return columnGenerateDataConfigs;
         }
@@ -86,13 +107,82 @@ namespace DBDataGenerator.Services
             ColumnGenerateDataConfig? oldConfig = columnGenerateDataConfigs.FirstOrDefault(x => x.ColumnName == newConfig.ColumnName);
 
             // 更新旧配置
-            if(oldConfig != null)
+            if (oldConfig != null)
             {
                 oldConfig.DataGenerateType = newConfig.DataGenerateType;
                 oldConfig.DataGenerateConfig = newConfig.DataGenerateConfig;
             }
 
+            // 保存配置
+            SaveColumnGenerateDataConfig(databaseName, tableName, columnGenerateDataConfigs);
+
             return columnGenerateDataConfigs;
+        }
+
+
+
+        /// <summary>
+        /// 保存文件到本地，格式{数据库名}_{表名}.json
+        /// </summary>
+        /// <param name="databaseName"></param>
+        /// <param name="tableName"></param>
+        /// <param name="columnGenerateDataConfigs"></param>
+        public void SaveColumnGenerateDataConfig(
+            string databaseName,
+            string tableName,
+            List<ColumnGenerateDataConfig> columnGenerateDataConfigs)
+        {
+            if (string.IsNullOrEmpty(databaseName) || string.IsNullOrEmpty(tableName)
+                || columnGenerateDataConfigs == null)
+            {
+                return;
+            }
+
+            string fileName = $"{databaseName}_{tableName}.json";// 文件名
+            string savePath = Path.Combine(this._configFileSavePath, fileName);// 保存路径
+
+            // 路径是否存在
+            if (!Directory.Exists(this._configFileSavePath))
+            {
+                Directory.CreateDirectory(this._configFileSavePath);
+            }
+
+            // 写入数据到文件
+            string data = JsonConvert.SerializeObject(columnGenerateDataConfigs, Formatting.Indented);
+            File.WriteAllText(savePath, data);
+        }
+
+
+        /// <summary>
+        /// 加载数据库列生成配置信息文件，
+        /// </summary>
+        /// <param name="databaseName"></param>
+        /// <param name="tableName"></param>
+        public List<ColumnGenerateDataConfig> LoadColumnGenerateDataConfigFile(string databaseName, string tableName)
+        {
+            if (string.IsNullOrEmpty(databaseName) || string.IsNullOrEmpty(tableName))
+            {
+                return new List<ColumnGenerateDataConfig>();
+            }
+
+            string fileName = $"{databaseName}_{tableName}.json";// 文件名
+            string savePath = Path.Combine(this._configFileSavePath, fileName);// 保存路径
+
+            // 路径是否存在
+            if (!File.Exists(savePath))
+            {
+                return new List<ColumnGenerateDataConfig>();
+            }
+
+            // 反序列化JSON文本
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new ColumnGenerateDataConfigJsonConverter());
+
+            // 读取配置文件的数据，并反序列化
+            string data = File.ReadAllText(savePath);
+            List<ColumnGenerateDataConfig> list = JsonConvert.DeserializeObject<List<ColumnGenerateDataConfig>>(data, settings);
+
+            return list;
         }
         #region 私有方法
 
