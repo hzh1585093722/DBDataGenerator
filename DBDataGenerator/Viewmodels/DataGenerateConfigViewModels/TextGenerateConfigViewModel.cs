@@ -4,6 +4,7 @@ using DBDataGenerator.DataModels;
 using DBDataGenerator.DataModels.DataGenerateConfigModels;
 using DBDataGenerator.DataModels.Enums;
 using DBDataGenerator.DataModels.ViewObjects;
+using DBDataGenerator.Views.DataGenerateConfigViews;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,7 +23,6 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
         private ObservableCollection<DataGenerateTypeSelectorVO> _dataGenerateTypeList = new ObservableCollection<DataGenerateTypeSelectorVO>();
         private DataGenerateTypeSelectorVO? _selectedDataGenerateType;
         private TextGenerateFormVO? _textGenerateFormVO = new TextGenerateFormVO();
-
         /// <summary>
         /// 用户点击保存按钮时的回调
         /// </summary>
@@ -47,7 +47,6 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
             set
             {
                 SetProperty(ref _selectedDataGenerateType, value);
-                this.SwitchDataGenerateConfigForm(_selectedDataGenerateType);
             }
         }
 
@@ -56,6 +55,94 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
         /// </summary>
         public TextGenerateFormVO? TextGenerateFormVO { get => _textGenerateFormVO; set => SetProperty(ref _textGenerateFormVO, value); }
 
+        #region 命令
+
+        /// <summary>
+        /// 添加JSON属性
+        /// </summary>
+        public RelayCommand AddJsonPropertyCmd => new RelayCommand(() =>
+        {
+            try
+            {
+                if (this.TextGenerateFormVO == null)
+                {
+                    MessageBox.Show("初始化JSON信息出错，请退出后重新进入该界面", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                JsonPropertyFormWindow jsonPropertyFormWindow = new JsonPropertyFormWindow(new JsonPropertiesConfig(), (newName) =>
+                {
+                    this.TextGenerateFormVO.Properties.Add(new JsonPropertiesConfig() { PropertyName = newName });
+                    return true;
+                });
+                jsonPropertyFormWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        });
+
+
+        /// <summary>
+        /// 删除JSON属性
+        /// </summary>
+        public RelayCommand DeleteJsonPropertyCmd => new RelayCommand(() =>
+        {
+            try
+            {
+                if (this.TextGenerateFormVO == null || this.TextGenerateFormVO.SelectedJsonProperty == null)
+                {
+                    MessageBox.Show("请选中1个JSON属性进行操作", "消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                JsonPropertiesConfig? deleteItem = this.TextGenerateFormVO.Properties.FirstOrDefault(x => x.PropertyName == this.TextGenerateFormVO.SelectedJsonProperty.PropertyName);
+
+                if (deleteItem != null)
+                {
+                    this.TextGenerateFormVO.Properties.Remove(deleteItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        });
+
+
+        /// <summary>
+        /// 重命名JSON属性
+        /// </summary>
+        public RelayCommand ModifyJsonPropertyCmd => new RelayCommand(() =>
+        {
+            try
+            {
+                if (this.TextGenerateFormVO == null || this.TextGenerateFormVO.SelectedJsonProperty == null)
+                {
+                    MessageBox.Show("请选中1个JSON属性进行操作", "消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                JsonPropertyFormWindow jsonPropertyFormWindow = new JsonPropertyFormWindow(this.TextGenerateFormVO.SelectedJsonProperty,
+                    (newName) =>
+                    {
+                        JsonPropertiesConfig? modifyItem = this.TextGenerateFormVO.Properties.FirstOrDefault(x => x.PropertyName == this.TextGenerateFormVO.SelectedJsonProperty.PropertyName);
+
+                        if (modifyItem != null)
+                        {
+                            modifyItem.PropertyName = newName;
+                        }
+
+                        return true;
+                    }
+                    );
+                jsonPropertyFormWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        });
 
         /// <summary>
         /// 保存配置
@@ -115,6 +202,8 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
                 MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         });
+        #endregion
+
 
 
 
@@ -176,6 +265,11 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
         /// <param name="dataGenerateConfig">数据生成配置</param>
         private void InitForm(IDataGenerateConfig dataGenerateConfig)
         {
+            // 清空表单的选中的JSON属性对象
+            if (this.TextGenerateFormVO != null)
+            {
+                this.TextGenerateFormVO.SelectedJsonProperty = null;
+            }
             //if (dataGenerateConfig == null)
             //{
             //    this.ShowIntValueForm = false;
@@ -206,41 +300,6 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
 
             //    return;
             //}
-        }
-
-
-        /// <summary>
-        /// 切换数据生成类型表单
-        /// </summary>
-        /// <param name="selectedDataGenerateType"></param>
-        private void SwitchDataGenerateConfigForm(DataGenerateTypeSelectorVO selectedDataGenerateType)
-        {
-            if (selectedDataGenerateType == null)
-            {
-                return;
-            }
-
-            //switch (selectedDataGenerateType.DataGenerateType)
-            //{
-            //    case DataGenerateTypeEnum.RandomInt:
-            //        {
-            //            this.ShowIntValueForm = true;
-            //            this.ShowRealValueForm = false;
-            //        };
-            //        break;
-            //    case DataGenerateTypeEnum.RandomFloat:
-            //        {
-            //            this.ShowIntValueForm = false;
-            //            this.ShowRealValueForm = true;
-            //        }
-            //        break;
-            //    default:
-            //        {
-            //            this.ShowIntValueForm = false;
-            //            this.ShowRealValueForm = false;
-            //        }
-            //        break;
-            //};
         }
         #endregion
     }

@@ -14,7 +14,7 @@ namespace DBDataGenerator.DataModels.ViewObjects
     public class DataGenerateTypeSelectorVO : ObservableObject
     {
         private string _name;
-        public DataGenerateTypeEnum _dataGenerateType;
+        private DataGenerateTypeEnum _dataGenerateType;
 
 
         /// <summary>
