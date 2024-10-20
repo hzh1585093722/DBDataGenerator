@@ -159,6 +159,10 @@ namespace DBDataGenerator.Viewmodels
                     MessageBox.Show("生成数量必须大于等于0", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+
+                Task.Run(() => {
+                    this._dataGenerateService.GenerateAndInsertData(this.TableName,this.DataGenerateConfigs.ToList(),this.GenerateCount);
+                });
             }
             catch (Exception ex)
             {

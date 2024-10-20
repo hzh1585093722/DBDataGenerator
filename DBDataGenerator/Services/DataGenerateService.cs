@@ -59,8 +59,6 @@ namespace DBDataGenerator.Services
             for (int i = 0; i < count; i += this._onceGenerateCount)
             {
                 string sql = GenerateInsertSql(tableName, columnGenerateDataConfigs, this._onceGenerateCount);
-
-
             }
 
 
@@ -201,12 +199,12 @@ namespace DBDataGenerator.Services
                 if (index + 1 == columnGenerateDataConfigs.Count)
                 {
                     // 遍历到最后一个字段时，不需要加逗号了
-                    stringBuilder.Append($"`item.ColumnName`");
+                    stringBuilder.Append($"`{item.ColumnName}`");
                 }
                 else
                 {
 
-                    stringBuilder.Append($"`item.ColumnName`,");
+                    stringBuilder.Append($"`{item.ColumnName}`,");
                 }
                 index++;
             }
