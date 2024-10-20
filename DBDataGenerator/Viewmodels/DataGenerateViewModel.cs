@@ -223,7 +223,11 @@ namespace DBDataGenerator.Viewmodels
 
                         });
                         break;
-                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Text: this.DisplayGenerateConfigView = new TextGenerateConfigView(); break;
+                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Text: this.DisplayGenerateConfigView = new TextGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
+                        {
+
+                        });
+                        break;
                     case DataModels.Enums.MysqlDataTypeCategoryEnum.Datetime:
                         this.DisplayGenerateConfigView = new DatetimeGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
                         {

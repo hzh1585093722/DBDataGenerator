@@ -34,7 +34,7 @@
                     </ComboBox>
                 </StackPanel>
 
-                <!--随机整数-->
+                <!--时间选择-->
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="固定时间值：" VerticalAlignment="Center"/>

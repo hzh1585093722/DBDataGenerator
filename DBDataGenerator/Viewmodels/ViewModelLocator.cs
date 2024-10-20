@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using DBDataGenerator.Viewmodels.DataGenerateConfigViewModels;
+using DBDataGenerator.Views.DataGenerateConfigViews;
 
 namespace DBDataGenerator.Viewmodels
 {
@@ -35,6 +36,7 @@ namespace DBDataGenerator.Viewmodels
             services.AddSingleton<DataGenerateService>();
             services.AddSingleton<NumberGenerateConfigViewModel>();
             services.AddSingleton<DatetimeGenerateConfigViewModel>();
+            services.AddSingleton<TextGenerateConfigViewModel>();
         }
 
 
@@ -72,6 +74,10 @@ namespace DBDataGenerator.Viewmodels
         /// 视图模型：日期类型生成配置
         /// </summary>
         public DatetimeGenerateConfigViewModel DatetimeGenerateConfigViewModel => _serviceProvider.GetRequiredService<DatetimeGenerateConfigViewModel>();
-        
+
+        /// <summary>
+        /// 视图模型：文本类型生成配置
+        /// </summary>
+        public TextGenerateConfigViewModel TextGenerateConfigViewModel => _serviceProvider.GetRequiredService<TextGenerateConfigViewModel>();
     }
 }
