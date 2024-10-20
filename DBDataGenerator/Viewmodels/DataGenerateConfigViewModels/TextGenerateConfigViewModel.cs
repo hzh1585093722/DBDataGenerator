@@ -282,36 +282,78 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
             {
                 this.TextGenerateFormVO.SelectedJsonProperty = null;
             }
-            //if (dataGenerateConfig == null)
-            //{
-            //    this.ShowIntValueForm = false;
-            //    this.ShowRealValueForm = false;
-            //    return;
-            //}
 
-            //// 整数配置初始化
-            //if (dataGenerateConfig is RandomIntGenerateConfig)
-            //{
-            //    RandomIntGenerateConfig randomIntGenerateConfig = (RandomIntGenerateConfig)dataGenerateConfig;
-            //    this.IntValueMax = randomIntGenerateConfig.UpperLimit;
-            //    this.IntValueMin = randomIntGenerateConfig.LowerLimit;
-            //    this.ShowIntValueForm = true;
-            //    this.ShowRealValueForm = false;
+            if (dataGenerateConfig == null || this.TextGenerateFormVO == null)
+            {
+                return;
+            }
 
-            //    return;
-            //}
+            // 整数配置初始化
+            if (dataGenerateConfig is RandomIntGenerateConfig)
+            {
+                RandomIntGenerateConfig randomIntGenerateConfig = (RandomIntGenerateConfig)dataGenerateConfig;
+                this.TextGenerateFormVO.IntValueMax = randomIntGenerateConfig.UpperLimit;
+                this.TextGenerateFormVO.IntValueMin = randomIntGenerateConfig.LowerLimit;
 
-            //// 实数配置初始化
-            //if (dataGenerateConfig is RandomFloatGenerateConfig)
-            //{
-            //    RandomFloatGenerateConfig randomIntGenerateConfig = (RandomFloatGenerateConfig)dataGenerateConfig;
-            //    this.RealValueMax = randomIntGenerateConfig.UpperLimit;
-            //    this.RealValueMin = randomIntGenerateConfig.LowerLimit;
-            //    this.ShowIntValueForm = false;
-            //    this.ShowRealValueForm = true;
+                return;
+            }
 
-            //    return;
-            //}
+            // 实数配置初始化
+            if (dataGenerateConfig is RandomFloatGenerateConfig)
+            {
+                RandomFloatGenerateConfig randomIntGenerateConfig = (RandomFloatGenerateConfig)dataGenerateConfig;
+                this.TextGenerateFormVO.RealValueMax = randomIntGenerateConfig.UpperLimit;
+                this.TextGenerateFormVO.RealValueMin = randomIntGenerateConfig.LowerLimit;
+
+                return;
+            }
+
+            // JSON对象配置初始化
+            if (dataGenerateConfig is JsonObjectGenerateConfig)
+            {
+                JsonObjectGenerateConfig jsonObjectGenerateConfig = (JsonObjectGenerateConfig)dataGenerateConfig;
+                this.TextGenerateFormVO.Properties = new ObservableCollection<JsonPropertiesConfig>(jsonObjectGenerateConfig.Properties);
+
+                return;
+            }
+
+            // JSON数组配置初始化
+            if (dataGenerateConfig is JsonArrayGenerateConfig)
+            {
+                JsonArrayGenerateConfig jsonArrayGenerateConfig = (JsonArrayGenerateConfig)dataGenerateConfig;
+                this.TextGenerateFormVO.Properties = new ObservableCollection<JsonPropertiesConfig>(jsonArrayGenerateConfig.JsonObjectConfig.Properties);
+                this.TextGenerateFormVO.JsonArrayCount = jsonArrayGenerateConfig.JsonArrayCount;
+
+                return;
+            }
+
+            // 条码配置初始化
+            if (dataGenerateConfig is BarcodeGenerateConfig)
+            {
+                BarcodeGenerateConfig barcodeGenerateConfig = (BarcodeGenerateConfig)dataGenerateConfig;
+                this.TextGenerateFormVO.Prefix = barcodeGenerateConfig.Prefix;
+                this.TextGenerateFormVO.SuffixNum = barcodeGenerateConfig.SuffixNum;
+
+                return;
+            }
+
+            // 时间配置初始化
+            if (dataGenerateConfig is DatetimeGenerateConfig)
+            {
+                DatetimeGenerateConfig datetimeGenerateConfig = (DatetimeGenerateConfig)dataGenerateConfig;
+                this.TextGenerateFormVO.FixedDatetimeVal = datetimeGenerateConfig.DateTimeVal;
+
+                return;
+            }
+
+            // 固定字符串配置初始化
+            if (dataGenerateConfig is FixedStringGenerateConfig)
+            {
+                FixedStringGenerateConfig fixedStringGenerateConfig = (FixedStringGenerateConfig)dataGenerateConfig;
+                this.TextGenerateFormVO.StringVal = fixedStringGenerateConfig.StringVal;
+
+                return;
+            }
         }
 
 

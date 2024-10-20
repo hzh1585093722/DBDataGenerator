@@ -30,6 +30,7 @@ namespace DBDataGenerator.Viewmodels
         private int _generateCount = 10000;
         private ContentControl _displayGenerateConfigView;
         private DataGenerateService _dataGenerateService;
+        private DataGenerateConfigService _dataGenerateConfigService;
         private ObservableCollection<ColumnGenerateDataConfig> _dataGenerateConfigs;
 
 
@@ -87,10 +88,14 @@ namespace DBDataGenerator.Viewmodels
         /// </summary>
         /// <param name="dataBaseService">数据库服务</param>
         /// <param name="dataGenerateService">数据生成服务</param>
-        public DataGenerateViewModel(DataBaseService dataBaseService, DataGenerateService dataGenerateService)
+        /// <param name="dataGenerateConfigService">数据生成配置服务</param>
+        public DataGenerateViewModel(DataBaseService dataBaseService, 
+            DataGenerateService dataGenerateService,
+            DataGenerateConfigService dataGenerateConfigService)
         {
             this._dataBaseService = dataBaseService;
             this._dataGenerateService = dataGenerateService;
+            _dataGenerateConfigService = dataGenerateConfigService;
         }
 
 
@@ -116,7 +121,7 @@ namespace DBDataGenerator.Viewmodels
                 }
 
                 // 初始化列数据生成配置
-                List<ColumnGenerateDataConfig> list = this._dataGenerateService.GetColumnGenerateDataConfigs(this.DbName, this.TableName, columnSchemas);
+                List<ColumnGenerateDataConfig> list = this._dataGenerateConfigService.GetColumnGenerateDataConfigs(this.DbName, this.TableName, columnSchemas);
                 this.DataGenerateConfigs = new ObservableCollection<ColumnGenerateDataConfig>(list);
             }
             catch (Exception ex)
@@ -214,24 +219,32 @@ namespace DBDataGenerator.Viewmodels
                     case DataModels.Enums.MysqlDataTypeCategoryEnum.Integer:
                         this.DisplayGenerateConfigView = new NumberGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
                         {
-
+                            // 更新配置
+                            this._dataGenerateConfigService.UpdateColumnGenerateDataConfig(this.DbName,this.TableName, 
+                                config,this.DataGenerateConfigs.ToList());
                         });
                         break;
                     case DataModels.Enums.MysqlDataTypeCategoryEnum.Real:
                         this.DisplayGenerateConfigView = new NumberGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
                         {
-
+                            // 更新配置
+                            this._dataGenerateConfigService.UpdateColumnGenerateDataConfig(this.DbName, this.TableName,
+                                config, this.DataGenerateConfigs.ToList());
                         });
                         break;
                     case DataModels.Enums.MysqlDataTypeCategoryEnum.Text: this.DisplayGenerateConfigView = new TextGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
                         {
-
+                            // 更新配置
+                            this._dataGenerateConfigService.UpdateColumnGenerateDataConfig(this.DbName, this.TableName,
+                                config, this.DataGenerateConfigs.ToList());
                         });
                         break;
                     case DataModels.Enums.MysqlDataTypeCategoryEnum.Datetime:
                         this.DisplayGenerateConfigView = new DatetimeGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
                         {
-
+                            // 更新配置
+                            this._dataGenerateConfigService.UpdateColumnGenerateDataConfig(this.DbName, this.TableName,
+                                config, this.DataGenerateConfigs.ToList());
                         });
                         break;
                     default: this.DisplayGenerateConfigView = null; break;
