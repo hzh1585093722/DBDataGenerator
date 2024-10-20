@@ -97,7 +97,7 @@ namespace DBDataGenerator.CustomControls
         /// <param name="e"></param>
         private void ParentWindow_Activated(object sender, EventArgs e)
         {
-            if(this.selectedTimeText.IsFocused)
+            if (this.selectedTimeText.IsFocused)
             {
                 this.datetimePickerPopop.IsOpen = true;
             }
@@ -163,7 +163,11 @@ namespace DBDataGenerator.CustomControls
         /// <param name="e"></param>
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            this.datetimePickerPopop.IsOpen = false;
+            // 文本框失去焦点，但是用户可能是在修改点击日期选择空间，所以这个时候不要关闭时期选择弹窗
+            if (!this.calendarControl.IsFocused)
+            {
+                this.datetimePickerPopop.IsOpen = false;
+            }
         }
 
         /// <summary>
@@ -175,23 +179,25 @@ namespace DBDataGenerator.CustomControls
         {
             // 处理日期变化
             Calendar? calendar = sender as Calendar;
-            if (calendar != null)
+            if (calendar == null)
             {
-                DateTime? selectedDate = calendar.SelectedDate;
-
-                if (selectedDate == null || this.SelectedDatetime == null)
-                {
-                    return;
-                }
-
-                this.SelectedDatetime = new DateTime(
-                        selectedDate.Value.Year,
-                        selectedDate.Value.Month,
-                        selectedDate.Value.Day,
-                        this.SelectedDatetime.Value.Hour,
-                        this.SelectedDatetime.Value.Minute,
-                        this.SelectedDatetime.Value.Second);
+                return;
             }
+            DateTime? selectedDate = calendar.SelectedDate;
+
+            if (selectedDate == null || this.SelectedDatetime == null)
+            {
+                return;
+            }
+
+            this.SelectedDatetime = new DateTime(
+                    selectedDate.Value.Year,
+                    selectedDate.Value.Month,
+                    selectedDate.Value.Day,
+                    this.SelectedDatetime.Value.Hour,
+                    this.SelectedDatetime.Value.Minute,
+                    this.SelectedDatetime.Value.Second);
+
         }
 
         private void hourSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -200,13 +206,13 @@ namespace DBDataGenerator.CustomControls
             if (listBox == null || listBox.SelectedItem == null || this.SelectedDatetime == null) { return; }
 
             int value = (int)listBox.SelectedItem;
-            this.SelectedDatetime = new DateTime(
-                        this.SelectedDatetime.Value.Year,
-                        this.SelectedDatetime.Value.Month,
-                        this.SelectedDatetime.Value.Day,
-                        value,
-                        this.SelectedDatetime.Value.Minute,
-                        this.SelectedDatetime.Value.Second);
+            //this.SelectedDatetime = new DateTime(
+            //            this.SelectedDatetime.Value.Year,
+            //            this.SelectedDatetime.Value.Month,
+            //            this.SelectedDatetime.Value.Day,
+            //            value,
+            //            this.SelectedDatetime.Value.Minute,
+            //            this.SelectedDatetime.Value.Second);
         }
 
 

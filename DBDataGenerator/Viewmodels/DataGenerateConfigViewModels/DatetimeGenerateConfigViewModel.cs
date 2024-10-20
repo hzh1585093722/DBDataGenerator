@@ -87,17 +87,16 @@ namespace DBDataGenerator.Viewmodels.DataGenerateConfigViewModels
                 {
                     case DataGenerateTypeEnum.Datetime:
                         {
-                            //newConfig.DataGenerateConfig = new RandomIntGenerateConfig()
-                            //{
-                            //    DatabaseName = newConfig.DatabaseName,
-                            //    TableName = newConfig.TableName,
-                            //    ColumnName = newConfig.ColumnName,
-                            //    LowerLimit = this.IntValueMin.HasValue ? this.IntValueMin.Value : 0,
-                            //    UpperLimit = this.IntValueMax.HasValue ? this.IntValueMax.Value : 100,
-                            //};
+                            newConfig.DataGenerateConfig = new DatetimeGenerateConfig()
+                            {
+                                DatabaseName = newConfig.DatabaseName,
+                                TableName = newConfig.TableName,
+                                ColumnName = newConfig.ColumnName,
+                                DateTimeVal = this.FixedDatetimeVal.Value
+                            };
                         }
                         break;
-                  
+
                     default: break;
                 }
 

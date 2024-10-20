@@ -39,7 +39,7 @@ namespace DBDataGenerator.Views.DataGenerateConfigViews
 
             this._datetimeGenerateConfigViewModel = (DatetimeGenerateConfigViewModel)this.DataContext;
             // 初始化配置界面
-            //this._numberGenerateConfigViewModel.InitConfigView(columnSchema, generateDataConfig, onGenerateDataConfigSave);
+            this._datetimeGenerateConfigViewModel.InitConfigView(columnSchema, generateDataConfig, onGenerateDataConfigSave);
         }
     }
 }
