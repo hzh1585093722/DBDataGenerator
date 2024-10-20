@@ -1,0 +1,16 @@
+﻿<Application x:Class="DBDataGenerator.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DBDataGenerator"
+             xmlns:vm="clr-namespace:DBDataGenerator.Viewmodels"
+             xmlns:converters="clr-namespace:DBDataGenerator.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!--视图模型实例定位器-->
+        <vm:ViewModelLocator x:Key="Locator" />
+        <!--转换器-->
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
+        <converters:DataGenerateTypeEnumToVisibilityConverter x:Key="DataGenerateTypeEnumToVisibilityConverter"/>
+    </Application.Resources>
+</Application>

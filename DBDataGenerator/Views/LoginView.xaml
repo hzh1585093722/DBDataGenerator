@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="DBDataGenerator.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DBDataGenerator.Views"
+             DataContext="{Binding Source={StaticResource Locator},Path=LoginViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="input_item_style" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition  MinHeight="400"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition  MinWidth="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1">
+                    <StackPanel Style="{StaticResource input_item_style}">
+                        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="主机名" />
+                        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap"  Width="120" Text="{Binding HostName}"/>
+                    </StackPanel>
+                    <StackPanel Style="{StaticResource input_item_style}">
+                        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="端口" />
+                        <TextBox HorizontalAlignment="Left"  TextWrapping="Wrap"   Width="120" Text="{Binding Port}"/>
+                    </StackPanel>
+                    <StackPanel  Style="{StaticResource input_item_style}">
+                        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="用户" />
+                        <TextBox HorizontalAlignment="Left"  TextWrapping="Wrap"   Width="120" Text="{Binding Username}"/>
+                    </StackPanel>
+                    <StackPanel Style="{StaticResource input_item_style}">
+                        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="密码" />
+                        <TextBox HorizontalAlignment="Left"  TextWrapping="Wrap"   Width="120" Text="{Binding Password}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="1">
+                <Button Command="{Binding LoginCmd}">连接</Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
