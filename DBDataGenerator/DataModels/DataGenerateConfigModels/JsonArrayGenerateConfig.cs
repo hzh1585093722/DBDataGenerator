@@ -15,7 +15,6 @@ namespace DBDataGenerator.DataModels.DataGenerateConfigModels
         private string _databaseName;
         private string _tableName;
         private string _columnName;
-        private string _prefix = "TEST";
         private int _jsonArrayCount = 1;
         private JsonObjectGenerateConfig _jsonObjectConfig = new JsonObjectGenerateConfig();
 
