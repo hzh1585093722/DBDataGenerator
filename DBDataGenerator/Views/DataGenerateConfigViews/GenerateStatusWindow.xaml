@@ -1,0 +1,26 @@
+﻿<Window x:Class="DBDataGenerator.Views.DataGenerateConfigViews.GenerateStatusWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DBDataGenerator.Views.DataGenerateConfigViews"
+        DataContext="{Binding Source={StaticResource Locator},Path=DataGenerateViewModel}"
+        xmlns:viewmodels="clr-namespace:DBDataGenerator.Viewmodels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:DataGenerateViewModel}"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="工作中" Height="150" Width="200">
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="正在生成和插入数据..."/>
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="数量:"/>
+                <TextBlock>
+                    <Run Text="{Binding RealtimeInsertCount}"/>
+                    <Run Text=" / "/>
+                    <Run Text="{Binding GenerateCount}"/>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

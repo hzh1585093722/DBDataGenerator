@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using DBDataGenerator.DataModels;
 using DBDataGenerator.DataModels.DataGenerateConfigModels;
+using DBDataGenerator.Messages;
 using DBDataGenerator.Services;
 using DBDataGenerator.Views;
 using DBDataGenerator.Views.DataGenerateConfigViews;
@@ -13,13 +15,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace DBDataGenerator.Viewmodels
 {
     /// <summary>
     /// 数据生成选项界面
     /// </summary>
-    public class DataGenerateViewModel : ObservableObject
+    public class DataGenerateViewModel : ObservableObject,IRecipient<UpdateRealtimeInsertCountMsg>
     {
         private string _dbName;
         private string _tableName;
@@ -32,6 +35,7 @@ namespace DBDataGenerator.Viewmodels
         private DataGenerateService _dataGenerateService;
         private DataGenerateConfigService _dataGenerateConfigService;
         private ObservableCollection<ColumnGenerateDataConfig> _dataGenerateConfigs;
+        private int _realtimeInsertCount = 0;
 
 
         /// <summary>
@@ -82,6 +86,10 @@ namespace DBDataGenerator.Viewmodels
         /// </summary>
         public ContentControl DisplayGenerateConfigView { get => _displayGenerateConfigView; set => SetProperty(ref _displayGenerateConfigView, value); }
 
+        /// <summary>
+        /// 当前插入数据库的数量，实时更新
+        /// </summary>
+        public int RealtimeInsertCount { get => _realtimeInsertCount; set => SetProperty(ref _realtimeInsertCount, value); }
 
         /// <summary>
         /// 构造方法
@@ -89,13 +97,26 @@ namespace DBDataGenerator.Viewmodels
         /// <param name="dataBaseService">数据库服务</param>
         /// <param name="dataGenerateService">数据生成服务</param>
         /// <param name="dataGenerateConfigService">数据生成配置服务</param>
-        public DataGenerateViewModel(DataBaseService dataBaseService, 
+        public DataGenerateViewModel(DataBaseService dataBaseService,
             DataGenerateService dataGenerateService,
             DataGenerateConfigService dataGenerateConfigService)
         {
             this._dataBaseService = dataBaseService;
             this._dataGenerateService = dataGenerateService;
             _dataGenerateConfigService = dataGenerateConfigService;
+
+            WeakReferenceMessenger.Default.Register<UpdateRealtimeInsertCountMsg>(this);
+        }
+
+
+        /// <summary>
+        /// 后台数据更新到VM的消息处理
+        /// </summary>
+        /// <param name="message"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void Receive(UpdateRealtimeInsertCountMsg message)
+        {
+            this.RealtimeInsertCount = message._count;
         }
 
 
@@ -155,14 +176,21 @@ namespace DBDataGenerator.Viewmodels
         {
             try
             {
-                if (this.GenerateCount < 0) {
+                if (this.GenerateCount < 0)
+                {
                     MessageBox.Show("生成数量必须大于等于0", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
-                Task.Run(() => {
-                    this._dataGenerateService.GenerateAndInsertData(this.TableName,this.DataGenerateConfigs.ToList(),this.GenerateCount);
+                GenerateStatusWindow window = new GenerateStatusWindow();
+                window.Show();
+                Task.Run(async () =>
+                {
+                    await this._dataGenerateService.GenerateAndInsertData(this.DbName, this.TableName, this.DataGenerateConfigs.ToList(), this.GenerateCount);
+                    Application.Current.Dispatcher.Invoke(() => { window.Close(); });
                 });
+
+
             }
             catch (Exception ex)
             {
@@ -227,8 +255,8 @@ namespace DBDataGenerator.Viewmodels
                         this.DisplayGenerateConfigView = new NumberGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
                         {
                             // 更新配置
-                            this._dataGenerateConfigService.UpdateColumnGenerateDataConfig(this.DbName,this.TableName, 
-                                config,this.DataGenerateConfigs.ToList());
+                            this._dataGenerateConfigService.UpdateColumnGenerateDataConfig(this.DbName, this.TableName,
+                                config, this.DataGenerateConfigs.ToList());
                         });
                         break;
                     case DataModels.Enums.MysqlDataTypeCategoryEnum.Real:
@@ -239,7 +267,8 @@ namespace DBDataGenerator.Viewmodels
                                 config, this.DataGenerateConfigs.ToList());
                         });
                         break;
-                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Text: this.DisplayGenerateConfigView = new TextGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
+                    case DataModels.Enums.MysqlDataTypeCategoryEnum.Text:
+                        this.DisplayGenerateConfigView = new TextGenerateConfigView(selectedColumnSchema, generateDataConfig, (config) =>
                         {
                             // 更新配置
                             this._dataGenerateConfigService.UpdateColumnGenerateDataConfig(this.DbName, this.TableName,
@@ -262,6 +291,8 @@ namespace DBDataGenerator.Viewmodels
                 MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
         #endregion
     }
 }
