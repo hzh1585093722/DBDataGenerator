@@ -146,7 +146,8 @@ namespace DBDataGenerator.Services
         /// <returns>返回对应配置生成的数据，如果配置为空，返回Null</returns>
         public string GenerateDataByDataGenerateConfig(DataGenerateTypeEnum dataGenerateType, IDataGenerateConfig dataGenerateConfig)
         {
-            if (dataGenerateConfig == null)
+            // 自增ID不用生成
+            if (dataGenerateConfig == null && dataGenerateType == DataGenerateTypeEnum.AutoIncrementID)
             {
                 return null;
             }

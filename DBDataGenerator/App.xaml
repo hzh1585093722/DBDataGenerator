@@ -6,11 +6,22 @@
              xmlns:converters="clr-namespace:DBDataGenerator.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!--视图模型实例定位器-->
-        <vm:ViewModelLocator x:Key="Locator" />
-        <!--转换器-->
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <converters:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
-        <converters:DataGenerateTypeEnumToVisibilityConverter x:Key="DataGenerateTypeEnumToVisibilityConverter"/>
+
+
+        <ResourceDictionary>
+            <!--视图模型实例定位器-->
+            <vm:ViewModelLocator x:Key="Locator" />
+            <!--转换器-->
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
+            <converters:DataGenerateTypeEnumToVisibilityConverter x:Key="DataGenerateTypeEnumToVisibilityConverter"/>
+            
+            <!--<ResourceDictionary.MergedDictionaries>
+                --><!--引入HandyControlUI库--><!--
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>-->
+        </ResourceDictionary>
+
     </Application.Resources>
 </Application>
